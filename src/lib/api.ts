@@ -67,7 +67,7 @@ export async function getAllLinkedLeagueIds(leagueId: string): Promise<string[]>
     while (currentId && !visited.has(currentId)) {
       visited.add(currentId);
       const league = await getLeagueInfo(currentId);
-      if (league && league.previous_league_id && !visited.has(league.previous_league_id)) {
+      if (league && league.previous_league_id && league.previous_league_id !== '0' && !visited.has(league.previous_league_id)) {
         linkedIds.add(league.previous_league_id);
         currentId = league.previous_league_id;
       } else {
