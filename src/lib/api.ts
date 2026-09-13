@@ -238,8 +238,9 @@ export async function getAllLeagueSeasons(leagueId: string): Promise<string[]> {
 
     // Get previous seasons by following the previous_league_id chain
     let currentLeagueId = currentLeague.previous_league_id;
-    while (currentLeagueId) {
+    while (currentLeagueId && currentLeagueId !== '0') {
       const previousLeague = await getLeagueInfo(currentLeagueId);
+      if (!previousLeague) break;
       seasons.push(previousLeague.season);
       currentLeagueId = previousLeague.previous_league_id;
     }
@@ -572,7 +573,7 @@ export async function getAdvancedTeamMetrics(leagueId: string, season?: string):
       while (currentLeagueId) {
         const league = await getLeagueInfo(currentLeagueId);
         if (!league) {
-          currentLeagueId = league.previous_league_id || '';
+          currentLeagueId = '';
           continue;
         }
         
